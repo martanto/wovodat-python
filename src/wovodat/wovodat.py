@@ -33,7 +33,7 @@ class WOVOdat:
         self.extracted_dir = os.path.join(self.wovodat_dir, "extracted")
 
     @cached_property
-    def data_availability(self):
+    def availability(self):
         df = pd.read_csv(self.availability_url)
         if len(df) == 0:
             print(f"⚠️ No data available in: {self.availability_url}")
@@ -48,7 +48,7 @@ class WOVOdat:
         return df
 
     @cached_property
-    def all_data_types(self) -> pd.DataFrame:
+    def data_types(self) -> pd.DataFrame:
         categories = []
         for category in CATEGORIES:
             types = category["types"]
