@@ -4,11 +4,11 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name =  "wovodat"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
     {name = "Martanto", email = "martanto@live.com"},
 ]
-description = "WOVOdat is a comprehensive global database on volcanic unrest aimed at understanding pre-eruptive processes and improving eruption forecasts"
+description = "Unofficial WOVOdat python package. WOVOdat is a comprehensive global database on volcanic unrest."
 readme = "README.md"
 license = {file = "LICENSE"}
 keywords = ["wovodat", "volcano", "data", "observatory", "volcanoes", "volcanic", "unrest", "forecast"]

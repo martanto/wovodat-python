@@ -1,13 +1,14 @@
 import os
 import pandas as pd
 import requests
+import zipfile
 from requests import RequestException
 from .const import CATEGORIES
 from .validator import validate_data_type_code
 from .utils import to_datetime
 from functools import cached_property, cache
 from gvp.utils import slugify
-from typing_extensions import Self
+from typing_extensions import Self, Dict
 
 
 class WOVOdat:
@@ -30,7 +31,10 @@ class WOVOdat:
         self.output_dir = os.path.join(os.getcwd(), "output")
         self.wovodat_dir = os.path.join(self.output_dir, "wovodat")
         self.download_dir = os.path.join(self.wovodat_dir, "download")
-        self.extracted_dir = os.path.join(self.wovodat_dir, "extracted")
+        self.zip_dir = os.path.join(self.download_dir, "zip")
+        self.extracted_dir = os.path.join(self.download_dir, "extracted")
+
+        self.extracted_files = {}
 
     @cached_property
     def availability(self):
@@ -64,6 +68,41 @@ class WOVOdat:
 
         return df
 
+    def extract(self, zip_file: str, extract_dir: str = None) -> Dict[str, str]:
+        """Extract zip files.
+
+        Args:
+            zip_file (str): zip file path.
+            extract_dir (str): extract directory path. Defaults to None.
+
+        Returns:
+            Dict[str, str]: Metadata dan data file location.
+        """
+        if extract_dir is None:
+            extract_dir = os.path.join(self.extracted_dir)
+        os.makedirs(extract_dir, exist_ok=True)
+
+        if self.debug:
+            print(f"🔨 Extract directory: {extract_dir}. ")
+
+        files_extracted = {}
+        with zipfile.ZipFile(zip_file, "r") as zip_ref:
+            for file in zip_ref.namelist():
+                try:
+                    zip_ref.extract(file, extract_dir)
+                except OSError as e:
+                    raise OSError(f"❌ Failed to extract {zip_file}: {e}")
+
+                if "metadata" in file:
+                    files_extracted["metadata"] = file
+                else:
+                    files_extracted["data"] = file
+
+        if self.verbose:
+            print(f"✅ Extracted {len(files_extracted)} files.")
+
+        return files_extracted
+
     @cache
     def download(
         self,
@@ -76,6 +115,7 @@ class WOVOdat:
         affiliation: str,
         url: str = None,
         output_dir: str = None,
+        extract_zip: bool = True,
     ) -> Self:
         """Download data from WOVOdat website.
 
@@ -89,6 +129,7 @@ class WOVOdat:
             affiliation (str): Affiliation.
             url (str): Download URL. Optional
             output_dir (str): Output directory. Optional. Defaults to current directory.
+            extract_zip (bool): Extract Zip files. Defaults to True.
 
         Returns:
             Self: WOVOdat object.
@@ -128,22 +169,34 @@ class WOVOdat:
 
         # Download zip file
         try:
+            # Ensuring download directory exists
+            os.makedirs(self.download_dir, exist_ok=True)
+
+            # Downloading zip file
             response = requests.get(url, params=params)
+
             if self.debug:
                 print(f"🔨 Downloaded from: {response.url}")
         except RequestException as e:
-            raise RequestException(f"❌ Failed to download")
+            raise RequestException(f"❌ Failed to download. {e}")
 
         if response.ok:
+            # Ensuring zip directory exists
+            os.makedirs(self.zip_dir, exist_ok=True)
+
             prefix = f"{smithsonian_id}_{start_date}_{end_date}_{slugify(self.data_type_code)}"
             filename = response.headers["content-disposition"].split("filename=")[1]
-            file_path = os.path.join(self.download_dir, f"{prefix}_{filename}")
+            file_path = os.path.join(self.zip_dir, f"{prefix}_{filename}")
 
             with open(file_path, mode="wb") as file:
                 file.write(response.content)
 
             if self.verbose:
                 print(f"✅ Downloaded file : {file_path}")
+
+            # Extract files
+            if extract_zip:
+                self.extracted_files = self.extract(zip_file=file_path)
 
             return self
 
