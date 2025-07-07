@@ -5,9 +5,8 @@ import zipfile
 from requests import RequestException
 from .const import CATEGORIES
 from .validator import validate_data_type_code
-from .utils import to_datetime
+from .utils import to_datetime, slugify
 from functools import cached_property, cache
-from gvp.utils import slugify
 from typing_extensions import Self, Dict
 
 
