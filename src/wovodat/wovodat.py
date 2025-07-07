@@ -3,7 +3,7 @@ import pandas as pd
 import requests
 import zipfile
 from requests import RequestException
-from .const import CATEGORIES
+from .const import CATEGORIES, CORRECTED
 from .validator import validate_data_type_code
 from .utils import to_datetime, slugify
 from functools import cached_property, cache
@@ -41,6 +41,18 @@ class WOVOdat:
         if len(df) == 0:
             print(f"⚠️ No data available in: {self.availability_url}")
             return pd.DataFrame()
+
+        # Correcting data type
+        df["corrected_data_type"] = df.apply(
+            lambda column: CORRECTED[column["data_type"]], axis=1
+        )
+
+        # Fix datetime column
+        df["stime"] = pd.to_datetime(df["stime"], errors="coerce", yearfirst=True)
+        df["etime"] = pd.to_datetime(df["etime"], errors="coerce", yearfirst=True)
+
+        # Reordering columns
+        df = df.iloc[:, [0, 1, 5, 2, 3, 4]]
 
         # Ensuring download directory exists
         os.makedirs(self.download_dir, exist_ok=True)
