@@ -17,6 +17,25 @@ pip install wovodat
 
 # 2. How to use
 You can check `examples` directory how to use the WOVOdat package using jupyter notebook.
+In short you can use it like this:
+
+```python
+from wovodat import WOVOdat
+
+wovo = WOVOdat()
+
+wovo.download(
+    smithsonian_id="273083",
+    data_type_code="6.5",
+    start_date="1991-05-10",
+    end_date="1991-05-17",
+    username="martanto",
+    email="martanto@live.com",
+    affiliation="CVGHM",
+    extract_zip=True,
+)
+```     
+More detailed information can be seen in the next step.
 
 ## 2.1 Import the module
 Import the WOVOdat module:
