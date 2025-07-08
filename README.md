@@ -63,7 +63,7 @@ or, just omit the parameters:
 wovo = WOVOdat()
 ```
 
-## 2.3 (Optional) Check list of supported data types
+## 2.3 (Optional) List of supported data types
 Call this attribute to get list of the supported data types. The column `code` can be used as reference to `data_type_code` parameter in step **2.5**
 ```python
 #%%
@@ -71,37 +71,39 @@ wovo.data_types
 ```
 Example output:
 
-|No  |Categories            |Data Type                        |Code|
-|----|----------------------|---------------------------------|----|
-| 0  |Deformation Data      |Angle                            |1.1|
-| 1  |Deformation Data      |EDM                              |1.2|
-| 2  |Deformation Data      |GPS                              |1.3|
-| 3  |Deformation Data      |GPS Vector                       |1.4|
-| 4  |Deformation Data      |Levelling                        |1.5|
-| 5  |Deformation Data      |Insar                            |1.6|
-| 6  |Deformation Data      |Strain                           |1.7|
-| 7  |Deformation Data      |Electronic Tilt                  |1.8|
-| 8  |Deformation Data      |Tilt Vector                      |1.9|
-| 9  |Fields Data           |Magnetic Fields                  |2.1|
-| 10 |Fields Data           |Gravity Fields                   |2.2|
-| 11 |Fields Data           |Electric Fields                  |2.3|
-| 12 |Fields Data           |Magnetic Vector                  |2.4|
-| 13 |Gas Data              |Sample Gas                       |3.1|
-| 14 |Gas Data              |Soil Efflux                      |3.2|
-| 15 |Gas Data              |Plume from Ground based station  |3.3|
-| 16 |Gas Data              |Plume From Satellite/Airplane    |3.4|
-| 17 |Hydrologic Sample Data|Hydrology                        |4.1|
-| 18 |Meteo Data            |Meteo                            |5.1|
-| 19 |Seismic Data          |Seismic Event From Network       |6.1|
-| 20 |Seismic Data          |Seismic Event From Single Station|6.2|
-| 21 |Seismic Data          |Seismic Tremor                   |6.3|
-| 22 |Seismic Data          |Seismic Intensity                |6.4|
-| 23 |Seismic Data          |RSAM                             |6.5|
-| 24 |Thermal Data          |Thermal from Ground based station|7.1|
-| 25 |Thermal Data          |Thermal From Satellite/Airplane  |7.2|
+| No |Categories            | Data Type                         | Code |
+|----|----------------------|-----------------------------------|------|
+| 0  |Deformation Data      | Angle                             | 1.1  |
+| 1  |Deformation Data      | EDM                               | 1.2  |
+| 2  |Deformation Data      | GPS                               | 1.3  |
+| 3  |Deformation Data      | GPS Vector                        | 1.4  |
+| 4  |Deformation Data      | Levelling                         | 1.5  |
+| 5  |Deformation Data      | Insar                             | 1.6  |
+| 6  |Deformation Data      | Strain                            | 1.7  |
+| 7  |Deformation Data      | Electronic Tilt                   | 1.8  |
+| 8  |Deformation Data      | Tilt Vector                       | 1.9  |
+| 9  |Fields Data           | Magnetic Fields                   | 2.1  |
+| 10 |Fields Data           | Gravity Fields                    | 2.2  |
+| 11 |Fields Data           | Electric Fields                   | 2.3  |
+| 12 |Fields Data           | Magnetic Vector                   | 2.4  |
+| 13 |Gas Data              | Sample Gas                        | 3.1  |
+| 14 |Gas Data              | Soil Efflux                       | 3.2  |
+| 15 |Gas Data              | Plume from Ground based station   | 3.3  |
+| 16 |Gas Data              | Plume From Satellite/Airplane     | 3.4  |
+| 17 |Hydrologic Sample Data| Hydrology                         | 4.1  |
+| 18 |Meteo Data            | Meteo                             | 5.1  |
+| 19 |Seismic Data          | Seismic Event From Network        | 6.1  |
+| 20 |Seismic Data          | Seismic Event From Single Station | 6.2  |
+| 21 |Seismic Data          | Seismic Tremor                    | 6.3  |
+| 22 |Seismic Data          | Seismic Intensity                 | 6.4  |
+| 23 |Seismic Data          | Seismic Interval                  | 6.5  |
+| 24 |Seismic Data          | RSAM                              | 6.6  |
+| 25 |Seismic Data          | SSAM                              | 6.7  |
+| 26 |Thermal Data          | Thermal from Ground based station | 7.1  |
+| 27 |Thermal Data          | Thermal From Satellite/Airplane   | 7.2  |
 
 ## 2.4 (Optional) Get data availability
-This attribute will download the data availabilty from WOVOdat page.
+This attribute will download the data availability from WOVOdat page.
 ```python
 wovo.availability
 ```
@@ -142,7 +144,7 @@ wovo.download(
     email="martanto@live.com",
     affiliation="CVGHM",
     
-    # Extarct downloaded zip file.
+    # Extract downloaded zip file.
     # Default to True.
     extract_zip=True,
 )
